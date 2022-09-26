@@ -6,12 +6,10 @@ using namespace GLCore::Utils;
 SandboxLayer::SandboxLayer()
 	: m_CameraController(16.0f / 9.0f)
 {
-
 }
 
 SandboxLayer::~SandboxLayer()
 {
-
 }
 
 void SandboxLayer::OnAttach()
@@ -27,24 +25,38 @@ void SandboxLayer::OnAttach()
 		"assets/shaders/test.frag.glsl"
 	);
 
+	float vertices[] = {
+		-0.5f, -0.6f, 0.0f,
+		 0.5f, -0.6f, 0.0f,
+		 0.5f,  0.4f, 0.0f,
+		-0.5f,  0.4f, 0.0f,
+
+		-1.5f, 0.5f, 0.0f,
+		 -0.5f, 0.5f, 0.0f,
+		 -0.5f,  1.0f, 0.0f,
+		-1.5f,  1.0f, 0.0f,
+
+		0.0f, 0.5f, 0.0f,
+		 1.0f, 0.5f, 0.0f,
+		 1.0f,  1.0f, 0.0f,
+		0.0f,  1.0f, 0.0f
+	};
+
 	glCreateVertexArrays(1, &m_QuadVA);
 	glBindVertexArray(m_QuadVA);
 
-	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.5f,  0.5f, 0.0f,
-		-0.5f,  0.5f, 0.0f
-	};
-
 	glCreateBuffers(1, &m_QuadVB);
 	glBindBuffer(GL_ARRAY_BUFFER, m_QuadVB);
+
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
 
-	uint32_t indices[] = { 0, 1, 2, 2, 3, 0 };
+	uint32_t indices[] = { 0, 1, 2, 2, 3, 0,
+						   4, 5, 6, 6, 7, 4,
+						8,9,10 ,10,11,8};
+
 	glCreateBuffers(1, &m_QuadIB);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_QuadIB);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -80,7 +92,7 @@ void SandboxLayer::OnUpdate(Timestep ts)
 	glUniform4fv(location, 1, glm::value_ptr(m_SquareColor));
 
 	glBindVertexArray(m_QuadVA);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, nullptr);
 }
 
 void SandboxLayer::OnImGuiRender()
