@@ -26,20 +26,20 @@ void SandboxLayer::OnAttach()
 	);
 
 	float vertices[] = {
-		-0.5f, -0.6f, 0.0f,
-		 0.5f, -0.6f, 0.0f,
-		 0.5f,  0.4f, 0.0f,
-		-0.5f,  0.4f, 0.0f,
+		-0.5f, -0.6f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+		 0.5f, -0.6f, 0.0f,	0.18f, 0.6f, 0.96f, 1.0f,
+		 0.5f,  0.4f, 0.0f,	0.18f, 0.6f, 0.96f, 1.0f,
+		-0.5f,  0.4f, 0.0f,	0.18f, 0.6f, 0.96f, 1.0f,
 
-		-1.5f, 0.5f, 0.0f,
-		 -0.5f, 0.5f, 0.0f,
-		 -0.5f,  1.0f, 0.0f,
-		-1.5f,  1.0f, 0.0f,
+		-1.5f, 0.5f, 0.0f,	0.18f, 0.96f, 0.96f, 1.0f,
+		 -0.5f, 0.5f, 0.0f, 0.18f, 0.96f, 0.96f, 1.0f,
+		 -0.5f,  1.0f, 0.0f,0.18f, 0.96f, 0.96f, 1.0f,
+		-1.5f,  1.0f, 0.0f, 0.18f, 0.96f, 0.96f, 1.0f,
 
-		0.0f, 0.5f, 0.0f,
-		 1.0f, 0.5f, 0.0f,
-		 1.0f,  1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f
+		0.0f, 0.5f, 0.0f, 0.8f, 0.6f, 0.96f, 1.0f,
+		 1.0f, 0.5f, 0.0f, 0.8f, 0.6f, 0.96f, 1.0f,
+		 1.0f,  1.0f, 0.0f, 0.8f, 0.6f, 0.96f, 1.0f,
+		0.0f,  1.0f, 0.0f, 0.8f, 0.6f, 0.96f, 1.0f,
 	};
 
 	glCreateVertexArrays(1, &m_QuadVA);
@@ -51,11 +51,13 @@ void SandboxLayer::OnAttach()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 7, 0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 7, (const void*)12);
 
 	uint32_t indices[] = { 0, 1, 2, 2, 3, 0,
 						   4, 5, 6, 6, 7, 4,
-						8,9,10 ,10,11,8};
+						8,9,10 ,10,11,8 };
 
 	glCreateBuffers(1, &m_QuadIB);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_QuadIB);
@@ -88,8 +90,8 @@ void SandboxLayer::OnUpdate(Timestep ts)
 	int location = glGetUniformLocation(m_Shader->GetRendererID(), "u_ViewProjection");
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(m_CameraController.GetCamera().GetViewProjectionMatrix()));
 
-	location = glGetUniformLocation(m_Shader->GetRendererID(), "u_Color");
-	glUniform4fv(location, 1, glm::value_ptr(m_SquareColor));
+	//location = glGetUniformLocation(m_Shader->GetRendererID(), "u_Color");
+	//glUniform4fv(location, 1, glm::value_ptr(m_SquareColor));
 
 	glBindVertexArray(m_QuadVA);
 	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, nullptr);
