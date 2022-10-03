@@ -21,4 +21,5 @@ private:
 	GLuint m_QuadVA, m_QuadVB, m_QuadIB;
 
 	glm::vec4 m_SquareColor = { 0.8f, 0.2f, 0.3f, 1.0f };
+	GLuint m_Texture1, m_Texture2;
 };
